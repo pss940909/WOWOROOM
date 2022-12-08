@@ -216,6 +216,7 @@ orderInfoBtn.addEventListener("click", function (e) {
     .then(function (response) {
       console.log(response);
       alert("訂單建立成功");
+      getCartList();
     });
 
   orderInfoForm.reset();
