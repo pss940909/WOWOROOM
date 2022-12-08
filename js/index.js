@@ -175,7 +175,6 @@ discardAllBtn.addEventListener("click", function (e) {
 });
 
 // 送出訂單
-
 orderInfoBtn.addEventListener("click", function (e) {
   e.preventDefault();
   //確認購物車內有資料
@@ -198,6 +197,17 @@ orderInfoBtn.addEventListener("click", function (e) {
   ) {
     alert("請輸入訂單資訊");
   }
+  // 信箱驗證
+  if (!ValidateEmail(customerEmail)) {
+    alert("請輸入正確的信箱地址");
+    return;
+  }
+  // 手機驗證
+  if (!ValidatePhone(customerPhone)) {
+    alert("請重新確認手機號碼");
+    return;
+  }
+  // 訂單API
   axios
     .post(
       `https://livejs-api.hexschool.io/api/livejs/v1/customer/pss940909/orders`,
@@ -216,7 +226,7 @@ orderInfoBtn.addEventListener("click", function (e) {
     .then(function (response) {
       console.log(response);
       alert("訂單建立成功");
-      getCartList();
+      getCartList(); // 重新渲染購物車
     });
 
   orderInfoForm.reset();
@@ -227,4 +237,20 @@ function toThousands(x) {
   var parts = x.toString().split(".");
   parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   return parts.join(".");
+}
+
+// 信箱驗證
+function ValidateEmail(mail) {
+  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(mail)) {
+    return true;
+  }
+  return false;
+}
+
+// 電話驗證
+function ValidatePhone(number) {
+  if (/^09[0-9]{8}$/.test(number)) {
+    return true;
+  }
+  return false;
 }
